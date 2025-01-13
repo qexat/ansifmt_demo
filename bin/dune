@@ -1,0 +1,4 @@
+(executable
+ (public_name ansifmt_demo)
+ (name main)
+ (libraries ansifmt_demo ansifmt))
