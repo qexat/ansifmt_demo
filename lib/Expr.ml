@@ -16,13 +16,22 @@ let ( / ) : t -> t -> t = fun left right -> Binop (Token_type.Operator.Slash, le
 let value (value : int) : t = Value value
 let var (name : string) : t = Variable name
 
-let rec tokenize : t -> Formatting.Token.t list = function
+let is_atomic : t -> bool = function
+  | Value _ | Variable _ -> true
+  | _ -> false
+;;
+
+let rec tokenize : t -> Formatting.Tree.t =
+  let open Formatting.Tree in
+  function
   | Binop (operator, left, right) ->
-    tokenize left
-    @ [ Formatting.Token.space ]
-    @ Token_type.Operator.tokenize operator
-    @ [ Formatting.Token.space ]
-    @ tokenize right
-  | Value value -> [ Formatting.Token_type.Literal_constant, Int.to_string value ]
-  | Variable name -> [ Formatting.Token_type.Identifier, name ]
+    block
+      [ parenthesize_if (fun x -> not (is_atomic x)) tokenize left
+      ; simple
+          ((Formatting.Token.space :: Token_type.Operator.tokenize operator)
+           @ [ Formatting.Token.space ])
+      ; parenthesize_if (fun x -> not (is_atomic x)) tokenize right
+      ]
+  | Value value -> simple [ Formatting.Token_type.Literal_constant, Int.to_string value ]
+  | Variable name -> simple [ Formatting.Token_type.Identifier, name ]
 ;;
