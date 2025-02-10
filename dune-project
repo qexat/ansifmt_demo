@@ -19,4 +19,7 @@
   "A very simple project that makes use of ansifmt's tokenization-based formatting.")
  (description
   "A very simple project that makes use of ansifmt's tokenization-based formatting.n")
- (depends ocaml))
+ (depends
+  ocaml
+  (ansifmt
+   (>= 0.2))))

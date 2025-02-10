@@ -12,6 +12,7 @@ bug-reports: "https://github.com/qexat/ansifmt_demo/issues"
 depends: [
   "dune" {>= "3.17"}
   "ocaml"
+  "ansifmt" {>= "0.2"}
   "odoc" {with-doc}
 ]
 build: [
