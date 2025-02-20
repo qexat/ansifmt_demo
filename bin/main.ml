@@ -1,6 +1,9 @@
-open Ansifmt.Prelude
+open Ansifmt
 open Ansifmt_demo
-open Expr
 
-let expr = (var "x" + value 3) * var "y"
-let () = print_formatted expr ~using:(module Expr)
+let expr =
+  let open Expr in
+  (var "x" + (value 3 - value 5)) * var "y"
+;;
+
+let () = IO.print_formatted expr ~using:(module Expr)

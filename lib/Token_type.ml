@@ -34,8 +34,10 @@ module Operator = struct
     | Slash -> "/"
   ;;
 
-  let tokenize (operator : t) : Formatting.Token.t list =
-    [ Formatting.Token_type.Operator_expr, show operator ]
+  open Formatting
+
+  let to_element (operator : t) : Element.t =
+    Element.singleton (Token_type.Operator_expr, show operator)
   ;;
 end
 

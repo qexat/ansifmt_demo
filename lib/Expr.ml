@@ -21,17 +21,17 @@ let is_atomic : t -> bool = function
   | _ -> false
 ;;
 
-let rec tokenize : t -> Formatting.Tree.t =
-  let open Formatting.Tree in
+let rec to_element : t -> Formatting.Element.t =
+  let open Formatting.Element in
+  let apply_if condition func arg = if condition then func arg else arg in
   function
   | Binop (operator, left, right) ->
-    block
-      [ parenthesize_if (fun x -> not (is_atomic x)) tokenize left
-      ; simple
-          ((Formatting.Token.space :: Token_type.Operator.tokenize operator)
-           @ [ Formatting.Token.space ])
-      ; parenthesize_if (fun x -> not (is_atomic x)) tokenize right
-      ]
-  | Value value -> simple [ Formatting.Token_type.Literal_constant, Int.to_string value ]
-  | Variable name -> simple [ Formatting.Token_type.Identifier, name ]
+    [ apply_if (Fun.negate is_atomic left) parenthesized (to_element left)
+    ; Token_type.Operator.to_element operator
+    ; apply_if (Fun.negate is_atomic right) parenthesized (to_element right)
+    ]
+    |> cluster
+    |> intercalated ~separating:[ Formatting.Token.space ]
+  | Value value -> singleton (Formatting.Token_type.Literal_constant, Int.to_string value)
+  | Variable name -> singleton (Formatting.Token_type.Identifier, name)
 ;;

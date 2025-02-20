@@ -22,4 +22,4 @@
  (depends
   ocaml
   (ansifmt
-   (>= 0.2))))
+   (>= 0.3))))

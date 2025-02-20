@@ -6,6 +6,6 @@ A very simple project that makes use of [`ansifmt`](https://opam.ocaml.org/packa
 
 > Theme: [Rosalie](https://github.com/qexat/rosalie)
 
-![Screenshot Kalmia](./assets/screenshot_kalmia.png)
+![Screenshot Atom](./assets/screenshot_atom.png)
 
-> Theme: [Kalmia](https://github.com/qexat/kalmia-theme)
+> Theme: Atom One Dark
